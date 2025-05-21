@@ -41,7 +41,7 @@ export default function DateSelector({
 
   return (
     <Popover className="relative" as="div">
-      {({ open }) => (
+      {() => (
         <>
           <label className="text-sm text-gray-600 mb-1 block">{label}</label>
 
@@ -65,7 +65,7 @@ export default function DateSelector({
             </Popover.Button>
 
             <AnimatePresence>
-              {open && (
+              {isOpen && (
                 <Popover.Panel
                   static
                   className="absolute z-10 mt-1 w-full"

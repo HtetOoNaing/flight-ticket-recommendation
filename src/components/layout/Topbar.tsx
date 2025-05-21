@@ -13,7 +13,7 @@ import AuthModal from "../auth/AuthModal";
 
 const navigation = [
   { name: "Flights", href: "/", current: true },
-  { name: "Deals", href: "/deals", current: false },
+  { name: "About Us", href: "/about-us", current: false },
 ];
 
 export type AuthUserType = {

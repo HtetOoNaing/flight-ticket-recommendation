@@ -15,7 +15,6 @@ interface FlightCardProps {
   from: string;
   to: string;
   duration: string;
-  stops: string;
   price: string;
   extraInfo?: React.ReactNode;
 }
@@ -34,12 +33,12 @@ const FlightCard: FC<FlightCardProps> = ({
       <p>
         <strong>Baggage:</strong> 20kg checked, 7kg carry-on
       </p>
-      <p>
-        <strong>Meal:</strong> Included
+      <p className="mt-1">
+        <strong>Meal:</strong> Not Included
       </p>
-      <p>
-        <strong>Aircraft:</strong> Airbus A320
-      </p>
+      <p className="mt-1"> - hange fees may apply</p>
+      <p className="mt-1"> - Cancel / Refund fees apply - Fully unused ticket</p>
+      <p className="mt-1"> - No-show fees apply</p>
     </div>
   ),
 }) => {

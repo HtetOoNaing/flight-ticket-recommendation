@@ -13,7 +13,6 @@ interface FlightData {
   from: string;
   to: string;
   duration: string;
-  stops: string;
   price: string;
 }
 
