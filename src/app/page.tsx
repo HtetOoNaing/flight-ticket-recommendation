@@ -29,7 +29,7 @@ const mockFlights = [
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-gray-50 py-12 px-4">
+    <main className="min-h-screen bg-gray-50 px-4 py-2">
       <FlightForm />
       <div className="p-6 max-w-4xl mx-auto mt-8">
         <FlightList flights={mockFlights} />

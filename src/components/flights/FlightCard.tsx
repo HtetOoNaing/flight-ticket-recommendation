@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import React, { FC } from "react";
 import { Disclosure, DisclosureButton } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
@@ -17,7 +17,7 @@ interface FlightCardProps {
   duration: string;
   stops: string;
   price: string;
-  extraInfo?: string;
+  extraInfo?: React.ReactNode;
 }
 
 const FlightCard: FC<FlightCardProps> = ({
@@ -29,7 +29,19 @@ const FlightCard: FC<FlightCardProps> = ({
   to,
   duration,
   price,
-  extraInfo = "Baggage: 20kg checked, 7kg carry-on. Meal included. Aircraft: Airbus A320.",
+  extraInfo = (
+    <div>
+      <p>
+        <strong>Baggage:</strong> 20kg checked, 7kg carry-on
+      </p>
+      <p>
+        <strong>Meal:</strong> Included
+      </p>
+      <p>
+        <strong>Aircraft:</strong> Airbus A320
+      </p>
+    </div>
+  ),
 }) => {
   const fallbackLogo = "/fallback-airline.png";
 
@@ -61,7 +73,9 @@ const FlightCard: FC<FlightCardProps> = ({
 
         <div className="flex flex-1 flex-col md:flex-row gap-3 justify-center items-center text-center md:text-left">
           <div>
-            <div className="text-lg font-semibold text-gray-700">{departureTime}</div>
+            <div className="text-lg font-semibold text-gray-700">
+              {departureTime}
+            </div>
             <div className="text-sm text-gray-500">{from}</div>
           </div>
           <div className="px-4">
@@ -72,16 +86,18 @@ const FlightCard: FC<FlightCardProps> = ({
           </div>
 
           <div>
-            <div className="text-lg font-semibold text-gray-700">{arrivalTime}</div>
+            <div className="text-lg font-semibold text-gray-700">
+              {arrivalTime}
+            </div>
             <div className="text-sm text-gray-500">{to}</div>
           </div>
         </div>
 
         <div className="flex flex-1 flex-col items-center md:items-end">
           <div className="text-xl font-bold text-sky-600">{price}</div>
-          <button className="mt-2 px-4 py-2 bg-sky-300 text-sky-600 rounded-xl hover:bg-sky-400 hover:text-sky-800 transition cursor-pointer">
+          {/* <button className="mt-2 px-4 py-2 bg-sky-300 text-sky-600 rounded-xl hover:bg-sky-400 hover:text-sky-800 transition cursor-pointer">
             Select
-          </button>
+          </button> */}
         </div>
       </div>
 
