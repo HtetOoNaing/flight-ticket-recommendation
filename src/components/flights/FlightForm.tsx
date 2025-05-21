@@ -8,7 +8,11 @@ import TravelClassSelector from "./TravelClassSelector";
 import { TripType, FlightSearchData } from "@/types/flights";
 import Passengers from "./Passengers";
 
-export default function FlightForm() {
+type FlightFormProps = {
+  setShowFlightList: (param: boolean) => void;
+};
+
+export default function FlightForm({ setShowFlightList }: FlightFormProps) {
   const [tripType, setTripType] = useState<TripType>("one-way");
 
   const [form, setForm] = useState<FlightSearchData>({
@@ -67,6 +71,7 @@ export default function FlightForm() {
   const handleSubmit = () => {
     console.log("Form Submitted:", form);
     // Submit to API or route here
+    setShowFlightList(true);
   };
 
   return (

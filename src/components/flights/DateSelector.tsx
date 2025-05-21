@@ -76,7 +76,7 @@ export default function DateSelector({
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.2 }}
-                    className="bg-white border border-gray-200 rounded-lg shadow-lg p-4"
+                    className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 rdp-custom"
                   >
                     <DayPicker
                       animate

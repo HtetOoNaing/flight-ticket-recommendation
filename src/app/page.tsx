@@ -1,5 +1,8 @@
+"use client"
+
 import FlightForm from "@/components/flights/FlightForm";
 import FlightList from "@/components/flights/FlightList";
+import { useState } from "react";
 
 const mockFlights = [
   {
@@ -28,11 +31,12 @@ const mockFlights = [
 ];
 
 export default function HomePage() {
+  const [showFlightList, setShowFlightList] = useState(false);
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-2">
-      <FlightForm />
+      <FlightForm setShowFlightList={setShowFlightList} />
       <div className="p-6 max-w-4xl mx-auto mt-8">
-        <FlightList flights={mockFlights} />
+        {showFlightList && <FlightList flights={mockFlights} />}
       </div>
     </main>
   );
