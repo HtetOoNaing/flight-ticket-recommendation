@@ -75,7 +75,7 @@ export default function FlightForm({ setShowFlightList }: FlightFormProps) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-3xl mx-auto mt-10">
+    <div className="bg-white/50 rounded-2xl shadow-lg p-6 w-full max-w-3xl mx-auto mt-10">
       <FlightTabs selected={tripType} onChange={setTripType} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">

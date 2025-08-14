@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 body {
-  @apply bg-gradient-to-b from-sky-100 to-white text-gray-800;
+  @apply bg-gradient-to-b from-sky-50 to-white text-gray-800;
   font-family: 'Inter', sans-serif;
 }
 

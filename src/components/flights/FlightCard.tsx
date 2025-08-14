@@ -64,7 +64,7 @@ const FlightCard: FC<FlightCardProps> = ({
               className="object-contain"
             />
           ) : (
-            <div className="rounded-full bg-gray-300 w-10 h-10"></div>
+            <div className="rounded-full bg-sky-300 w-10 h-10"></div>
           )}
 
           <div className="text-sm font-medium">{airlineName}</div>

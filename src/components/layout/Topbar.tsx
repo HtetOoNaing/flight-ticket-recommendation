@@ -10,10 +10,11 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import AuthModal from "../auth/AuthModal";
+import { usePathname } from "next/navigation";
 
 const navigation = [
-  { name: "Flights", href: "/", current: true },
-  { name: "About Us", href: "/about-us", current: false },
+  { name: "Flights", href: "/flights" },
+  { name: "About Us", href: "/about-us" },
 ];
 
 export type AuthUserType = {
@@ -28,10 +29,11 @@ function classNames(...classes: string[]) {
 export default function Topbar() {
   const [authUser, setAuthUser] = useState<AuthUserType | null>(null);
   const [isAuthOpen, setAuthOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <>
-      <Disclosure as="nav" className="bg-white shadow-md sticky top-0 z-50">
+      <Disclosure as="nav" className="bg-sky-50 shadow-md sticky top-0 z-50">
         {({ open }) => (
           <>
             <motion.div
@@ -47,7 +49,7 @@ export default function Topbar() {
                     <div className="flex items-center gap-2">
                       <div className="w-5 h-5 border-4 border-sky-500 rotate-45"></div>
                       <span className="font-bold text-lg text-sky-600">
-                        FlyFinder
+                        FlySmart
                       </span>
                     </div>
                   </Link>
@@ -59,7 +61,7 @@ export default function Topbar() {
                           key={item.name}
                           href={item.href}
                           className={classNames(
-                            item.current
+                            pathname === item.href
                               ? "text-sky-600"
                               : "text-gray-600 hover:text-sky-600",
                             "px-3 py-2 rounded-md text-sm font-medium"
@@ -150,7 +152,7 @@ export default function Topbar() {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current
+                          pathname === item.href
                             ? "text-sky-600"
                             : "text-gray-700 hover:text-sky-600",
                           "block px-3 py-2 rounded-md text-base font-medium"
