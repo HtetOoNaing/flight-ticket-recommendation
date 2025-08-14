@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body className="min-h-screen flex flex-col">
         <Topbar />
-        <main className="container mx-auto px-4 py-8 flex-1">
+        <main className="flex-1">
           {children}
         </main>
         <footer className="bg-sky-700 text-white py-6">
