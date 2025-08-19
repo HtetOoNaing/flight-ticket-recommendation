@@ -17,6 +17,7 @@ type FlightFormProps = {
 
 export default function FlightForm({ setFlightList }: FlightFormProps) {
   const [tripType, setTripType] = useState<TripType>("one-way");
+  const [arrivalCities, setArrivalCities] = useState<string[]>([]);
 
   const [form, setForm] = useState<FlightSearchData>({
     departure_city: "",
@@ -90,6 +91,21 @@ export default function FlightForm({ setFlightList }: FlightFormProps) {
     }
   };
 
+  const handleDepartureCityChange = async (value: string) => {
+    console.log("Departure city changed:", value);
+    handleChange("departure_city", value)
+    try {
+      const res = await api.get(`/get_arrival_cities/${value}`);
+      const locations = res.data || [];
+      console.log("Fetched locations:", locations);
+      setArrivalCities(locations);
+      // Optionally update state or handle locations
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+      toast.error("Failed to fetch locations. Please try again.");
+    }
+  };
+
   return (
     <div className="bg-white/50 rounded-2xl shadow-lg p-6 w-full max-w-3xl mx-auto mt-10">
       <FlightTabs selected={tripType} onChange={setTripType} />
@@ -98,12 +114,13 @@ export default function FlightForm({ setFlightList }: FlightFormProps) {
         <LocationInput
           label="Departure City"
           value={form.departure_city}
-          onChange={(v) => handleChange("departure_city", v)}
+          onChange={(v) => handleDepartureCityChange(v)}
         />
         <LocationInput
           label="Arrival City"
           value={form.arrival_city}
           onChange={(v) => handleChange("arrival_city", v)}
+          locations={arrivalCities.map((city) => ({ label: city, value: city }))}
         />
 
         <Selector

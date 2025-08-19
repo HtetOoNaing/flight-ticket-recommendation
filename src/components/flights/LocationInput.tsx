@@ -7,9 +7,10 @@ interface Props {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  locations?: { label: string; value: string }[];
 }
 
-export default function LocationInput({ label, value, onChange }: Props) {
+export default function LocationInput({ label, value, onChange, locations = LOCATIONS }: Props) {
   const [query, setQuery] = useState(value);
   const [filtered, setFiltered] = useState<typeof LOCATIONS>([]);
   const [highlightIndex, setHighlightIndex] = useState(-1);
@@ -26,14 +27,14 @@ export default function LocationInput({ label, value, onChange }: Props) {
     const timeout = setTimeout(() => {
       const results =
         query.length > 0
-          ? LOCATIONS.filter((loc) =>
+          ? locations.filter((loc) =>
               loc.label.toLowerCase().includes(query.toLowerCase())
             )
           : [];
       setFiltered(results);
     }, 200);
     return () => clearTimeout(timeout);
-  }, [query]);
+  }, [query, locations]);
 
   const handleSelect = useCallback(
     (label: string) => {
