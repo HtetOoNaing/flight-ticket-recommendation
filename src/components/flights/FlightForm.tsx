@@ -16,7 +16,7 @@ type FlightFormProps = {
 };
 
 export default function FlightForm({ setFlightList }: FlightFormProps) {
-  const [tripType, setTripType] = useState<TripType>("one-way");
+  const [tripType, setTripType] = useState<TripType>("one_way");
   const [arrivalCities, setArrivalCities] = useState<string[]>([]);
 
   const [form, setForm] = useState<FlightSearchData>({
@@ -76,8 +76,9 @@ export default function FlightForm({ setFlightList }: FlightFormProps) {
 
   const handleSubmit = async () => {
     console.log("Form Submitted:", form);
+    const data = { ...form, trip_type: tripType };
     try {
-      const res = await api.post("/search-flights", form);
+      const res = await api.post("/search-flights", data);
       // Submit to API or route here
       const recommendations = res.data.recommendations || [];
       const returnRecommendations = res.data.return_recommendations || [];
@@ -168,7 +169,7 @@ export default function FlightForm({ setFlightList }: FlightFormProps) {
           onChange={(v) => handleChange("departure_date", v)}
         />
 
-        {tripType === "round-trip" && (
+        {tripType === "round_trip" && (
           <DateSelector
             label="Return Date"
             value={form.return_date ?? ""}

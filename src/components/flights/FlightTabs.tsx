@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function FlightTabs({ selected, onChange }: Props) {
-  const tabs: TripType[] = ["one-way", "round-trip"];
+  const tabs: TripType[] = ["one_way", "round_trip"];
 
   return (
     <div className="flex bg-gray-100 p-1 rounded-full w-fit mx-auto">
@@ -29,7 +29,7 @@ export default function FlightTabs({ selected, onChange }: Props) {
             />
           )}
           <span className="relative z-10 capitalize">
-            {tab.replace("-", " ")}
+            {tab.replace("_", " ")}
           </span>
         </button>
       ))}

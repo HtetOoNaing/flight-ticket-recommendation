@@ -1,4 +1,4 @@
-export type TripType = 'one-way' | 'round-trip';
+export type TripType = 'one_way' | 'round_trip';
 
 export interface FlightSearchData {
   departure_city: string;
