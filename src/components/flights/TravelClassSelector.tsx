@@ -13,7 +13,7 @@ export default function TravelClassSelector({
 }: Props) {
   return (
     <div>
-      <span className="block text-sm text-gray-600 mb-2">Travel Class</span>
+      <span className="block text-sm text-gray-600 mb-2">Cabin Class</span>
       <div className="flex gap-3">
         {travelClasses.map((cls) => (
           <button

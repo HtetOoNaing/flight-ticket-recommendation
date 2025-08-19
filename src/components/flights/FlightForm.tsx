@@ -5,30 +5,35 @@ import FlightTabs from "./FlightTabs";
 import LocationInput from "./LocationInput";
 import DateSelector from "./DateSelector";
 import TravelClassSelector from "./TravelClassSelector";
-import { TripType, FlightSearchData } from "@/types/flights";
+import { TripType, FlightSearchData, FlightData } from "@/types/flights";
 import Passengers from "./Passengers";
+import Selector from "./Selector";
+import api from "@/config/api";
+import { toast } from "sonner";
 
 type FlightFormProps = {
-  setShowFlightList: (param: boolean) => void;
+  setFlightList: (param: FlightData[]) => void;
 };
 
-export default function FlightForm({ setShowFlightList }: FlightFormProps) {
+export default function FlightForm({ setFlightList }: FlightFormProps) {
   const [tripType, setTripType] = useState<TripType>("one-way");
 
   const [form, setForm] = useState<FlightSearchData>({
-    from: "",
-    to: "",
-    departureDate: "",
-    returnDate: "",
+    departure_city: "",
+    arrival_city: "",
+    flight_type: "",
+    price_range: "",
+    departure_date: "",
+    return_date: "",
     passengers: {
       adults: 1,
       children: 0,
       infants: 0,
     },
-    travelClass: "Economy",
+    cabin_class: "Economy",
   });
 
-  const travelClasses = ["Economy", "Business", "First"];
+  const travelClasses = ["Economy", "Business"];
   const passengerTypes = [
     {
       label: "Adults (12yrs and above)",
@@ -64,14 +69,25 @@ export default function FlightForm({ setShowFlightList }: FlightFormProps) {
   const handleClassChange = (value: string) => {
     setForm((prev) => ({
       ...prev,
-      travelClass: value as FlightSearchData["travelClass"],
+      cabin_class: value as FlightSearchData["cabin_class"],
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log("Form Submitted:", form);
-    // Submit to API or route here
-    setShowFlightList(true);
+    try {
+      const res = await api.post("/search-flights", form);
+      // Submit to API or route here
+      const recommendations = res.data.recommendations || [];
+      const returnRecommendations = res.data.return_recommendations || [];
+      console.log("Flight recommendations:", recommendations);
+      console.log("Flight returnRecommendations:", returnRecommendations);
+      const allFlights = [...recommendations, ...returnRecommendations];
+      setFlightList(allFlights);
+    } catch (error) {
+      console.error("Error submitting flight search:", error);
+      toast.error("Failed to search flights. Please try again.");
+    }
   };
 
   return (
@@ -80,28 +96,67 @@ export default function FlightForm({ setShowFlightList }: FlightFormProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         <LocationInput
-          label="Flying From"
-          value={form.from}
-          onChange={(v) => handleChange("from", v)}
+          label="Departure City"
+          value={form.departure_city}
+          onChange={(v) => handleChange("departure_city", v)}
         />
         <LocationInput
-          label="Flying To"
-          value={form.to}
-          onChange={(v) => handleChange("to", v)}
+          label="Arrival City"
+          value={form.arrival_city}
+          onChange={(v) => handleChange("arrival_city", v)}
+        />
+
+        <Selector
+          label="Flight Type"
+          value={form.flight_type}
+          onChange={(v) => handleChange("flight_type", v)}
+          options={[
+            { label: "Direct", value: "direct" },
+            { label: "Transit", value: "transit" },
+          ]}
+          icon={<svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path d="M10.18 2.09a1 1 0 00-1.36 0l-1.8 1.6a1 1 0 00-.32.74v4.12L2.3 11.3a1 1 0 00.7 1.7h3.5l1.2 3.6a1 1 0 001.9 0l1.2-3.6h3.5a1 1 0 00.7-1.7l-4.4-2.75V4.43a1 1 0 00-.32-.74l-1.8-1.6z" />
+            </svg>}
+          placeholder="Select flight type"
+        />
+
+        <Selector
+          label="Price Range"
+          value={form.price_range}
+          onChange={(v) => handleChange("price_range", v)}
+          options={[
+            { label: "Budget ($0-150)", value: "Budget ($0-150)" },
+            { label: "Standard ($150-300)", value: "Standard ($150-300)" },
+            { label: "Premium ($300+)", value: "Premium ($300+)" }
+          ]}
+          icon={<svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path d="M17.707 9.293l-7-7A1 1 0 009 2H3a1 1 0 00-1 1v6a1 1 0 00.293.707l7 7a1 1 0 001.414 0l6-6a1 1 0 000-1.414zM6 7a1 1 0 110-2 1 1 0 010 2z" />
+          </svg>}
+          placeholder="Select Price Range"
         />
 
         <DateSelector
           label="Departure Date"
-          value={form.departureDate}
-          onChange={(v) => handleChange("departureDate", v)}
+          value={form.departure_date}
+          onChange={(v) => handleChange("departure_date", v)}
         />
 
         {tripType === "round-trip" && (
           <DateSelector
             label="Return Date"
-            value={form.returnDate ?? ""}
-            onChange={(v) => handleChange("returnDate", v)}
-            disableBefore={form.departureDate}
+            value={form.return_date ?? ""}
+            onChange={(v) => handleChange("return_date", v)}
+            disableBefore={form.departure_date}
           />
         )}
       </div>
@@ -113,7 +168,7 @@ export default function FlightForm({ setShowFlightList }: FlightFormProps) {
           onChange={handlePassengerChange}
         />
         <TravelClassSelector
-          selectedClass={form.travelClass}
+          selectedClass={form.cabin_class}
           onClassChange={handleClassChange}
           travelClasses={travelClasses}
         />

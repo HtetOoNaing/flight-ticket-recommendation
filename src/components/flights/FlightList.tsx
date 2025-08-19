@@ -3,18 +3,7 @@
 import { FC } from "react";
 import { motion } from "framer-motion";
 import FlightCard from "./FlightCard";
-
-interface FlightData {
-  id: string;
-  airlineLogo?: string;
-  airlineName: string;
-  departureTime: string;
-  arrivalTime: string;
-  from: string;
-  to: string;
-  duration: string;
-  price: string;
-}
+import { FlightData } from "@/types/flights";
 
 interface FlightListProps {
   flights: FlightData[];
@@ -35,8 +24,8 @@ const FlightList: FC<FlightListProps> = ({ flights }) => {
       }}
       className="space-y-6"
     >
-      {flights.map((flight) => (
-        <FlightCard key={flight.id} {...flight} />
+      {flights.map((flight, index) => (
+        <FlightCard key={index} {...flight} />
       ))}
     </motion.div>
   );

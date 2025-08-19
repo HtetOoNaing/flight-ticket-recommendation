@@ -1,33 +1,30 @@
 "use client";
 
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Disclosure, DisclosureButton } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
+import { FlightData } from "@/types/flights";
+import BookFlightModal from "./BookFlightModal";
 
-interface FlightCardProps {
-  airlineLogo?: string;
-  airlineName: string;
-  departureTime: string;
-  arrivalTime: string;
-  from: string;
-  to: string;
-  duration: string;
-  price: string;
+type FlightCardProps = FlightData & {
   extraInfo?: React.ReactNode;
 }
+const FlightCard: FC<FlightCardProps> = (flightData) => {
 
-const FlightCard: FC<FlightCardProps> = ({
-  airlineLogo,
-  airlineName,
-  departureTime,
-  arrivalTime,
-  from,
-  to,
-  duration,
-  price,
+const {
+  Airline: airlineName,
+  DepartureTime: departureTime,
+  ArrivalTime: arrivalTime,
+  DepartureCity: from,
+  ArrivalCity: to,
+  Duration: duration,
+  Price: price,
+  Stops: stops,
+  Stopover: stopover,
+  CabinClass: cabinClass,
+  FlightType: flightType,
   extraInfo = (
     <div>
       <p>
@@ -36,15 +33,30 @@ const FlightCard: FC<FlightCardProps> = ({
       <p className="mt-1">
         <strong>Meal:</strong> Not Included
       </p>
+      <p className="mt-1">
+        <strong>Stops:</strong> {stops} {stops > 1 ? "stops" : "stop"} {stopover ? `(${stopover})` : ""}
+      </p>
+      <p className="mt-1">
+        <strong>Cabin Class:</strong> {cabinClass}
+      </p>
+      <p className="mt-1">
+        <strong>Flight Type:</strong> {flightType}
+      </p>
       <p className="mt-1"> - hange fees may apply</p>
-      <p className="mt-1"> - Cancel / Refund fees apply - Fully unused ticket</p>
-      <p className="mt-1"> - No-show fees apply</p>
+      <p className="mt-1"> - Cancel / Refund fees apply</p>
     </div>
   ),
-}) => {
-  const fallbackLogo = "/fallback-airline.png";
+} = flightData;
+
+  const [showBookingModal, setShowBookingModal] = useState(false);
+
+  const handleSelect = () => {
+    console.log("Flight selected:", airlineName, from, to, departureTime, arrivalTime, price);
+    setShowBookingModal(true)
+  };
 
   return (
+    <>
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -55,18 +67,7 @@ const FlightCard: FC<FlightCardProps> = ({
       {/* Flight Info */}
       <div className="flex flex-col md:flex-row gap-4 items-center">
         <div className="flex flex-1 items-center gap-3 min-w-[120px]">
-          {airlineLogo ? (
-            <Image
-              src={airlineLogo || fallbackLogo}
-              alt={airlineName}
-              width={40}
-              height={40}
-              className="object-contain"
-            />
-          ) : (
-            <div className="rounded-full bg-sky-300 w-10 h-10"></div>
-          )}
-
+          <div className="rounded-full bg-sky-300 w-10 h-10"></div>
           <div className="text-sm font-medium">{airlineName}</div>
         </div>
 
@@ -80,7 +81,7 @@ const FlightCard: FC<FlightCardProps> = ({
           <div className="px-4">
             <ArrowLongRightIcon className="h-5 w-12 text-gray-400 hidden md:block" />
             <div className="text-sm text-gray-500 text-center md:text-left">
-              {duration}
+              {duration} mins
             </div>
           </div>
 
@@ -93,10 +94,10 @@ const FlightCard: FC<FlightCardProps> = ({
         </div>
 
         <div className="flex flex-1 flex-col items-center md:items-end">
-          <div className="text-xl font-bold text-sky-600">{price}</div>
-          {/* <button className="mt-2 px-4 py-2 bg-sky-300 text-sky-600 rounded-xl hover:bg-sky-400 hover:text-sky-800 transition cursor-pointer">
-            Select
-          </button> */}
+          <div className="text-xl font-bold text-sky-600">{(price * 4500).toLocaleString()} MMK</div>
+          <button onClick={handleSelect} className="mt-2 px-5 py-2 bg-sky-600 text-sky-100 rounded-xl hover:bg-sky-400 hover:text-sky-800 transition cursor-pointer">
+            Book Flight
+          </button>
         </div>
       </div>
 
@@ -127,6 +128,8 @@ const FlightCard: FC<FlightCardProps> = ({
         )}
       </Disclosure>
     </motion.div>
+    <BookFlightModal isOpen={showBookingModal} onClose={() => setShowBookingModal(false)} flightData={flightData}/>
+    </>
   );
 };
 
