@@ -2,6 +2,7 @@ import './globals.css';
 import { ReactNode } from 'react';
 import { Metadata } from 'next';
 import Topbar from "@/components/layout/Topbar";
+import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
   title: 'FlySmart - Flight Recommendation System',
@@ -12,6 +13,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col">
+        <Toaster position="top-right" richColors={true} />
         <Topbar />
         <main className="flex-1">
           {children}

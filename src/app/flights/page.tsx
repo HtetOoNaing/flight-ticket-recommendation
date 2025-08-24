@@ -5,13 +5,14 @@ import FlightList from "@/components/flights/FlightList";
 import { FlightData } from "@/types/flights";
 import { useState } from "react";
 
+// const initialData: FlightData[] = [{'Airline': 'Myanmar Airways International(MAI)', 'DepartureCity': 'Yangon', 'ArrivalCity': 'Bangkok', 'DepartureTime': '10:40:00', 'ArrivalTime': '11:35:00', 'Duration': 85, 'Stops': 0, 'Stopover': 'None', 'CabinClass': 'Economy', 'Price': 131.0, 'FlightType': 'Direct', 'Date': 'mon,tue,wed,thu,fri,sat,sun', 'StopoverInfo': 'Direct'}];
 export default function FlightPage() {
-  const [flightList, setFlightList] = useState<FlightData[]>([{'Airline': 'Myanmar Airways International(MAI)', 'DepartureCity': 'Yangon', 'ArrivalCity': 'Bangkok', 'DepartureTime': '10:40:00', 'ArrivalTime': '11:35:00', 'Duration': 85, 'Stops': 0, 'Stopover': 'None', 'CabinClass': 'Economy', 'Price': 131.0, 'FlightType': 'Direct', 'Date': 'mon,tue,wed,thu,fri,sat,sun', 'StopoverInfo': 'Direct'}]);
+  const [flightList, setFlightList] = useState<FlightData[]>([]);
   return (
     <main className="px-4 py-2">
       <FlightForm setFlightList={setFlightList} />
       <div className="p-6 max-w-4xl mx-auto mt-8">
-        {flightList.length && <FlightList flights={flightList} />}
+        {flightList.length > 0 ? <FlightList flights={flightList} /> : null}
       </div>
     </main>
   );

@@ -11,6 +11,21 @@ import Selector from "./Selector";
 import api from "@/config/api";
 import { toast } from "sonner";
 
+const initialData: FlightSearchData = {
+  departure_city: "",
+  arrival_city: "",
+  flight_type: "",
+  price_range: "",
+  departure_date: "",
+  return_date: "",
+  passengers: {
+    adults: 1,
+    children: 0,
+    infants: 0,
+  },
+  cabin_class: "Economy",
+}
+
 type FlightFormProps = {
   setFlightList: (param: FlightData[]) => void;
 };
@@ -19,20 +34,7 @@ export default function FlightForm({ setFlightList }: FlightFormProps) {
   const [tripType, setTripType] = useState<TripType>("one_way");
   const [arrivalCities, setArrivalCities] = useState<string[]>([]);
 
-  const [form, setForm] = useState<FlightSearchData>({
-    departure_city: "",
-    arrival_city: "",
-    flight_type: "",
-    price_range: "",
-    departure_date: "",
-    return_date: "",
-    passengers: {
-      adults: 1,
-      children: 0,
-      infants: 0,
-    },
-    cabin_class: "Economy",
-  });
+  const [form, setForm] = useState<FlightSearchData>(initialData);
 
   const travelClasses = ["Economy", "Business"];
   const passengerTypes = [
@@ -86,6 +88,8 @@ export default function FlightForm({ setFlightList }: FlightFormProps) {
       console.log("Flight returnRecommendations:", returnRecommendations);
       const allFlights = [...recommendations, ...returnRecommendations];
       setFlightList(allFlights);
+      setForm(initialData);
+      toast.success("Flight recommendations are ready!");
     } catch (error) {
       console.error("Error submitting flight search:", error);
       toast.error("Failed to search flights. Please try again.");
